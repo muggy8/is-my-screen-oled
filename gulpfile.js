@@ -1,17 +1,19 @@
-const { src, dest, series, parallel } = require('gulp')
-const gulpTerser = require('gulp-terser')
-const terser = require("terser")
-const gulpCleanCSS = require('gulp-clean-css')
-const CleanCSS = require('clean-css')
-const htmlmin = require('gulp-htmlmin')
-const jsonminify = require('gulp-jsonminify')
-const replace = require('gulp-async-replace')
+import { src, dest, series, parallel } from 'gulp'
+import gulpTerser from 'gulp-terser'
+import gulpCleanCSS from 'gulp-clean-css'
+import CleanCSS from 'clean-css'
+import imagemin from 'gulp-imagemin'
+import htmlmin from 'gulp-htmlmin'
+import jsonminify from 'gulp-jsonminify'
+import replace from 'gulp-async-replace'
+import { minify } from "terser"
+
 
 const sourceDir = "src"
 const outputDir = "docs/"
 const cleanCss = new CleanCSS({})
 
-const copy = exports.copy = function() {
+export const copy = function() {
 	return src([
 		`${sourceDir}/**/*.*`,
 		`!${sourceDir}/**/*.md`,
@@ -22,26 +24,19 @@ const copy = exports.copy = function() {
 	.pipe(dest(outputDir))
 }
 
-const jsMinificationConfigs = {
-	drop_console: true,
-	// passes: 3,
-}
-
-
-const minifyJs = exports.minifyJs = function() {
+export const minifyJs = function() {
 	return src(`${sourceDir}/**/*.js`)
-		.pipe(gulpTerser(jsMinificationConfigs, terser.minify))
-		.pipe(replace(/(\\n)+(\\t)+/gm, " "))
+		.pipe(gulpTerser())
 		.pipe(dest(outputDir))
 }
 
-const minifyCss = exports.minifyCss = function() {
+export const minifyCss = function() {
 	return src(`${sourceDir}/**/*.css`)
 		.pipe(gulpCleanCSS())
 		.pipe(dest(outputDir))
 }
 
-const minifyHtml = exports.minifyHtml = function() {
+export const minifyHtml = function() {
 	return src(`${sourceDir}/**/*.html`)
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(replace(/<style[^>]*>(.+?)<\/style>/gs, function(match, cssCode){
@@ -55,13 +50,13 @@ const minifyHtml = exports.minifyHtml = function() {
                 .replace(/<script[^>]*>/gs, '')
                 .replace(/<\/script>/gs, '')
 
-			const minifiedJs = await terser.minify(jsCode)
+			const minifiedJs = await minify(jsCode)
 			return match.replace(jsCode, minifiedJs.code)
 		}))
 		.pipe(dest(outputDir))
 }
 
-const minifyJson = exports.minifyJson = function(){
+export const minifyJson = function(){
 	return src([
 			`${sourceDir}/**/*.json`,
 			`${sourceDir}/**/*.webmanifest`,
@@ -70,7 +65,22 @@ const minifyJson = exports.minifyJson = function(){
 		.pipe(dest(outputDir))
 }
 
-exports.default = series(
+export const copyArt = function() {
+	return src([
+		`${sourceDir}/**/*.png`,
+		`${sourceDir}/**/*.svg`,
+		`${sourceDir}/**/*.webp`,
+	])
+	.pipe(dest(outputDir))
+}
+
+export const minifyPng = function() {
+	return src(`${sourceDir}/**/*.png`)
+		.pipe(imagemin())
+		.pipe(dest(outputDir))
+}
+
+export const code = series(
 	copy,
 	parallel(
 		minifyJs,
@@ -79,3 +89,22 @@ exports.default = series(
 		minifyJson,
 	),
 )
+
+export const art = series(
+	copyArt,
+	minifyPng,
+)
+
+export const all = series(
+	copy,
+	parallel(
+		minifyJs,
+		minifyCss,
+		minifyHtml,
+		minifyJson,
+	),
+	copyArt,
+	minifyPng,
+)
+
+export default code
