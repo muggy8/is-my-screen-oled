@@ -1,14 +1,14 @@
 {
-  "name": "OLED?",
-  "short_name": "OLED?",
+  "name": "OLED Checker",
+  "short_name": "OLED Checker",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "./android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "./android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -18,5 +18,13 @@
   "display": "standalone",
   "description": "An app that lets users verify if their screen is an OLED or Micro LED screen",
   "orientation": "any",
-  "categories": ["utilities"]
+  "categories": ["utilities"],
+  "scope" : "./",
+  "start_url" : "./",
+  "developer": {
+      "name": "Muggy Ate"
+  },
+  "manifest_version": 1,
+  "version": "1.0.0",
+  "version_name": "1.0.0 Hello World"
 }
