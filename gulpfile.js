@@ -91,7 +91,7 @@ export const copyArt = function() {
 		`${sourceDir}/**/*.svg`,
 		`${sourceDir}/**/*.webp`,
 		`${sourceDir}/**/*.ico`,
-	])
+	], { encoding: false })
 	.pipe(dest(outputDir))
 }
 
@@ -103,7 +103,7 @@ export const minifyArt = function() {
 		`${sourceDir}/**/*.png`,
 		`${sourceDir}/**/*.svg`,
 		`${sourceDir}/**/*.webp`,
-	])
+	], { encoding: false })
 		.pipe(imagemin())
 		.pipe(dest(outputDir))
 }
