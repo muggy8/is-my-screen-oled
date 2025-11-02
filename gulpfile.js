@@ -55,8 +55,6 @@ const minifyHtml = exports.minifyHtml = function() {
                 .replace(/<script[^>]*>/gs, '')
                 .replace(/<\/script>/gs, '')
 
-            console.log(jsCode)
-
 			const minifiedJs = await terser.minify(jsCode)
 			return match.replace(jsCode, minifiedJs.code)
 		}))
