@@ -8,6 +8,7 @@ if (indexUrl.includes("localhost")){
 	devLog = console.log
 }
 
+console.log({swFolder, indexUrl, urlRoot})
 
 self.addEventListener("install", function(ev){
 	devLog("begin install", ev, location)
