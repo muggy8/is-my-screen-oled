@@ -70,12 +70,17 @@ export const copyArt = function() {
 		`${sourceDir}/**/*.png`,
 		`${sourceDir}/**/*.svg`,
 		`${sourceDir}/**/*.webp`,
+		`${sourceDir}/**/*.ico`,
 	])
 	.pipe(dest(outputDir))
 }
 
-export const minifyPng = function() {
-	return src(`${sourceDir}/**/*.png`)
+export const minifyArt = function() {
+	return src([
+		`${sourceDir}/**/*.png`,
+		`${sourceDir}/**/*.svg`,
+		`${sourceDir}/**/*.webp`,
+	])
 		.pipe(imagemin())
 		.pipe(dest(outputDir))
 }
@@ -92,7 +97,7 @@ export const code = series(
 
 export const art = series(
 	copyArt,
-	minifyPng,
+	minifyArt,
 )
 
 export const all = series(
@@ -104,7 +109,7 @@ export const all = series(
 		minifyJson,
 	),
 	copyArt,
-	minifyPng,
+	minifyArt,
 )
 
 export default code
