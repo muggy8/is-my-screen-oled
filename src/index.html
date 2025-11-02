@@ -5,13 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OLED?</title>
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        
         html, body {
-            color: CCC;
+            color: FFF;
             background-color: #000;
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, .explain {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .explain {
+            overflow: auto;
+            transition: opacity 0.25s;
+            text-align: center;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invisible {
+            opacity: 0;
+        }
+
+        .explain .content {
+            max-width: 40rem;
+            color: #FFF;
+        }
+
+        .explain .content a {
+            color: cyan;
         }
     </style>
 </head>
 <body>
-    <!-- Content goes here -->
+    <main class="explain invisible" onclick="this.classList.toggle('invisible')">
+        <div class="content">
+            <h1>What is this?</h1>
+            <p>This site allow you to check if the screen you're using is an <a href="https://en.wikipedia.org/wiki/OLED" target="_blank">OLED</a> or <a href="https://en.wikipedia.org/wiki/MicroLED" target="_blank">Micro LED</a> panel. Pure black pixels on OLED and Micro LED screen do not emit light. If you see any light coming from the screen when viewing this page in the dark, it is likely that the screen you're view this on is NOT an OLED or Micro LED screen.</p>
+        </div>
+    </main>
 </body>
 </html>
